@@ -18,9 +18,14 @@ Installation
 Usage
 -----
 
+
+Renko chart cacluation with python
+
 .. code-block:: python
 
     from stocktrends import Renko
-    renko= Renko(df)
+
+
+    renko = Renko(df)
     renko.brick_size = 2
     data = renko.get_chart_data()

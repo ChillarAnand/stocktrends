@@ -1,5 +1,6 @@
-"""stocktrends - An opinionated, minimal cookiecutter template for Python packages"""
+"""stocktrends"""
 
 __version__ = '0.1.0'
-__author__ = 'chillar anand <louis@kragniz.eu>'
-__all__ = []
+__author__ = 'chillar anand'
+
+from .indicators import Renko
