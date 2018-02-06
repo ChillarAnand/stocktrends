@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name="stocktrends",
-    version="0.1.0",
+    version="0.1.1",
     url="https://github.com/borntyping/cookiecutter-pypackage-minimal",
 
     author="chillar anand",

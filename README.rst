@@ -14,6 +14,11 @@ Installation
 ------------
 
 
+.. code-block:: shell
+
+    pip install stocktrends
+
+
 
 Usage
 -----
@@ -29,3 +34,4 @@ Renko chart cacluation with python
     renko = Renko(df)
     renko.brick_size = 2
     data = renko.get_chart_data()
+    print(data.tail())
