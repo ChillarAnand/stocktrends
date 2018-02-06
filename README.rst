@@ -13,10 +13,20 @@ stocktrends
 Installation
 ------------
 
+To install stable version from pypi, run
 
 .. code-block:: shell
 
     pip install stocktrends
+
+
+To install latest code from github, run
+
+.. code-block:: shell
+
+    pip install git+https://github.com/chillaranand/stocktrends
+
+
 
 
 
