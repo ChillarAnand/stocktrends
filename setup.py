@@ -3,11 +3,11 @@ import setuptools
 
 setuptools.setup(
     name="stocktrends",
-    version="0.1.1",
-    url="https://github.com/borntyping/cookiecutter-pypackage-minimal",
+    version="0.1.3",
+    url="https://github.com/chillaranand/stocktrends",
 
     author="chillar anand",
-    author_email="",
+    author_email="chillar@avilpage.com",
 
     description="",
     long_description=open('README.rst').read(),
