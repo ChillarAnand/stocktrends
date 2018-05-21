@@ -76,3 +76,17 @@ LineBreak chart calcuation
     lb.line_number = 3
     data = lb.get_ohlc_data()
     print(data.tail())
+
+
+PnF chart calcuation
+
+.. code-block:: python
+
+    from stocktrends import PnF
+
+
+    pnf = PnF(df)
+    pnf.box_size = 2
+    pnf.reversal_size = 3
+    data = pnf.get_ohlc_data()
+    print(data.tail())
