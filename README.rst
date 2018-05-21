@@ -36,6 +36,7 @@ Usage
 -----
 
 Create OHLC dataframe.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -53,6 +54,7 @@ Create OHLC dataframe.
 
 
 Renko chart calcuation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -66,6 +68,7 @@ Renko chart calcuation
 
 
 LineBreak chart calcuation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -79,6 +82,7 @@ LineBreak chart calcuation
 
 
 PnF chart calcuation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
