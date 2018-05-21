@@ -1,4 +1,5 @@
 import pandas as pd
+# import ray.dataframe as pd
 
 
 class Instrument:
@@ -169,8 +170,8 @@ class LineBreak(Instrument):
 
 
 class PnF(Instrument):
-    box_size = 1
-    reversal_size = 1
+    box_size = 2
+    reversal_size = 3
 
     @property
     def brick_size(self):
@@ -180,80 +181,68 @@ class PnF(Instrument):
         state = None
         if uptrend_p1 and bricks > 0:
             state = self.UPTREND_CONTINUAL
-        elif uptrend_p1 and bricks * -1 > self.reversal_size:
+        elif uptrend_p1 and bricks * -1 >= self.reversal_size:
             state = self.UPTREND_REVERSAL
         elif not uptrend_p1 and bricks < 0:
             state = self.DOWNTREND_CONTINUAL
-        elif not uptrend_p1 and bricks > self.reversal_size:
+        elif not uptrend_p1 and bricks >= self.reversal_size:
             state = self.DOWNTREND_REVERSAL
         return state
 
+    def roundit(self, x, base=5):
+        return int(base * round(float(x)/base))
+
     def get_ohlc_data(self):
-        brick_size = self.brick_size
+        box_size = self.box_size
+        print(self.df.head())
+        # self.df = self.df.head(20)
+        data = self.df.itertuples()
+        close_p1 = self.df.ix[0]['open']
+        open_p1 = self.df.ix[0]['open']
+        uptrend_p1 = True
+        pnf_data = [[0, 0, 0, 0, self.roundit(open_p1, base=self.box_size), True]]
 
-        self.df = self.df[['date', 'open', 'high', 'low', 'close']]
+        for row in data:
+            date = row.date
+            close = row.close
+            close_p1 = pnf_data[-1][-2]
 
-        columns = ['date', 'open', 'high', 'low', 'close']
+            bricks = int((close - close_p1) / box_size)
+            state = self.get_state(uptrend_p1, bricks)
 
-        self.cdf = pd.DataFrame(
-            columns=columns,
-            data=[],
-        )
-
-        self.cdf.loc[0] = self.df.loc[0]
-        close = self.df.loc[0]['close'] // brick_size * brick_size
-        self.cdf.loc[0, 1:] = [close - brick_size, close, close - brick_size, close]
-        self.cdf['uptrend'] = True
-
-        columns = ['date', 'open', 'high', 'low', 'close', 'uptrend']
-
-        for index, row in self.df.iterrows():
-            close = row['close']
-            date = row['date']
-
-            row_p1 = self.cdf.iloc[-1]
-            uptrend_p1 = row_p1['uptrend']
-            close_p1 = row_p1['close']
-
-            bricks = int((close - close_p1) / brick_size)
-            data = []
-
-            state = self.get_state(close, bricks)
-
-            print(date, bricks, close, close_p1, uptrend_p1, state)
-
-            if state == self.UPTREND_CONTINUAL:
-                uptrend = uptrend_p1
-                for i in range(bricks):
-                    r = [date, close_p1, close_p1 + brick_size, close_p1, close_p1 + brick_size, uptrend]
-                    data.append(r)
-                    close_p1 += brick_size
-            elif state == self.UPTREND_REVERSAL:
-                uptrend = not uptrend_p1
-                bricks += 1
-                close_p1 -= brick_size
-                for i in range(abs(bricks)):
-                    r = [date, close_p1, close_p1, close_p1 - brick_size, close_p1 - brick_size, uptrend]
-                    data.append(r)
-                    close_p1 -= brick_size
-            elif state == self.DOWNTREND_CONTINUAL:
-                for i in range(abs(bricks)):
-                    r = [date, close_p1, close_p1, close_p1 - brick_size, close_p1 - brick_size, uptrend]
-                    data.append(r)
-                    close_p1 -= brick_size
-            elif state == self.DOWNTREND_REVERSAL:
-                uptrend = not uptrend_p1
-                bricks -= 1
-                close_p1 += brick_size
-                for i in range(abs(bricks)):
-                    r = [date, close_p1, close_p1 + brick_size, close_p1, close_p1 + brick_size, uptrend]
-                    data.append(r)
-                    close_p1 += brick_size
-            else:
+            if state is None:
                 continue
 
-            sdf = pd.DataFrame(data=data, columns=columns)
-            self.cdf = pd.concat([self.cdf, sdf])
+            day_data = []
 
-        self.cdf.reset_index(inplace=True, drop=True)
+            if state == self.UPTREND_CONTINUAL:
+                for i in range(bricks):
+                    r = [date, close_p1, close_p1 + box_size, close_p1, close_p1 + box_size, uptrend_p1]
+                    day_data.append(r)
+                    close_p1 += box_size
+            elif state == self.UPTREND_REVERSAL:
+                uptrend_p1 = not uptrend_p1
+                bricks += 1
+                close_p1 -= box_size
+                for i in range(abs(bricks)):
+                    r = [date, close_p1, close_p1, close_p1 - box_size, close_p1 - box_size, uptrend_p1]
+                    day_data.append(r)
+                    close_p1 -= box_size
+            elif state == self.DOWNTREND_CONTINUAL:
+                for i in range(abs(bricks)):
+                    r = [date, close_p1, close_p1, close_p1 - box_size, close_p1 - box_size, uptrend_p1]
+                    day_data.append(r)
+                    close_p1 -= box_size
+            elif state == self.DOWNTREND_REVERSAL:
+                uptrend_p1 = not uptrend_p1
+                bricks -= 1
+                close_p1 += box_size
+                for i in range(abs(bricks)):
+                    r = [date, close_p1, close_p1 + box_size, close_p1, close_p1 + box_size, uptrend_p1]
+                    day_data.append(r)
+                    close_p1 += box_size
+
+            pnf_data.extend(day_data)
+
+        self.cdf = pd.DataFrame(pnf_data[1:])
         return self.cdf
