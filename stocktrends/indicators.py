@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 # import ray.dataframe as pd
 
@@ -194,8 +195,6 @@ class PnF(Instrument):
 
     def get_ohlc_data(self):
         box_size = self.box_size
-        print(self.df.head())
-        # self.df = self.df.head(20)
         data = self.df.itertuples()
         close_p1 = self.df.ix[0]['open']
         open_p1 = self.df.ix[0]['open']
@@ -245,4 +244,26 @@ class PnF(Instrument):
             pnf_data.extend(day_data)
 
         self.cdf = pd.DataFrame(pnf_data[1:])
+        self.cdf.columns = ['date', 'open', 'high', 'low', 'close', 'uptrend']
         return self.cdf
+
+    def get_bar_ohlc_data(self):
+        df = self.get_ohlc_data()
+
+        df['trend_change'] = df['uptrend'].ne(df['uptrend'].shift().bfill()).astype(int)
+        df['trend_change_-1'] = df['trend_change'].shift(-1)
+
+        start = df.iloc[0].values
+        df = df[(df['trend_change'] == 1) | (df['trend_change_-1'] == 1)]
+        data = np.vstack([start, df.values])
+        df = pd.DataFrame(data)
+        df.columns = ['date', 'open', 'high', 'low', 'close', 'uptrend', 'tc', 'tc1']
+
+        bopen = df['open'][df.index%2 == 0]
+        bclose = df['close'][df.index%2 == 1]
+        df = pd.DataFrame([bopen.values, bclose.values]).T
+        df.columns = ['open', 'close']
+        df['high'] = df[['open', 'close']].max(axis=1)
+        df['low'] = df[['open', 'close']].min(axis=1)
+        df.dropna(inplace=True)
+        return df
