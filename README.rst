@@ -92,5 +92,11 @@ PnF chart calcuation
     pnf = PnF(df)
     pnf.box_size = 2
     pnf.reversal_size = 3
+
+    # to get boxes information
     data = pnf.get_ohlc_data()
-    print(data.tail())
+    print(data)
+
+    # to get OHLC for bars
+    data = pnf.get_bar_ohlc_data()
+    print(data)
