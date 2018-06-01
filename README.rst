@@ -7,10 +7,6 @@ A python package to calcuate trends in stock markets.
     :target: https://pypi.python.org/pypi/stocktrends
     :alt: Latest PyPI version
 
-.. image:: stocktrends.png
-   :target: stocktrends
-   :alt: Latest Travis CI build status
-
 
 Installation
 ------------
