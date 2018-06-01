@@ -31,6 +31,10 @@ To install latest code from github, run
 Usage
 -----
 
+Check out demo.py file for detailed usage.
+
+
+
 Create OHLC dataframe.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
