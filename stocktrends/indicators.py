@@ -259,10 +259,14 @@ class PnF(Instrument):
         df = pd.DataFrame(data)
         df.columns = ['date', 'open', 'high', 'low', 'close', 'uptrend', 'tc', 'tc1']
 
-        bopen = df['open'][df.index%2 == 0]
-        bclose = df['close'][df.index%2 == 1]
-        df = pd.DataFrame([bopen.values, bclose.values]).T
-        df.columns = ['open', 'close']
+        bopen = df[['date', 'open']][df.index%2 == 0]
+        bclose = df[['date', 'close']][df.index%2 == 1]
+
+        bopen.reset_index(inplace=True, drop=True)
+        bclose.reset_index(inplace=True, drop=True)
+        bopen['close'] = bclose['close']
+        df = bopen
+
         df['high'] = df[['open', 'close']].max(axis=1)
         df['low'] = df[['open', 'close']].min(axis=1)
         df.dropna(inplace=True)
