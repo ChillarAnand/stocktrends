@@ -270,4 +270,5 @@ class PnF(Instrument):
         df['high'] = df[['open', 'close']].max(axis=1)
         df['low'] = df[['open', 'close']].min(axis=1)
         df.dropna(inplace=True)
+        df[['open', 'close']] = df[['open', 'close']].astype(float)
         return df
