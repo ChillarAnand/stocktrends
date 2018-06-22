@@ -100,3 +100,11 @@ PnF chart calcuation
     # to get OHLC for bars
     data = pnf.get_bar_ohlc_data()
     print(data)
+
+    # to get boxes information based on HIGH-LOW
+    data = pnf.get_ohlc_data(source='HL')
+    print(data)
+
+    # to get OHLC for bars
+    data = pnf.get_bar_ohlc_data(source='HL')
+    print(data)

@@ -193,20 +193,38 @@ class PnF(Instrument):
     def roundit(self, x, base=5):
         return int(base * round(float(x)/base))
 
-    def get_ohlc_data(self):
+    def get_ohlc_data(self, source='close'):
+        source = source.lower()
         box_size = self.box_size
         data = self.df.itertuples()
-        close_p1 = self.df.ix[0]['open']
-        open_p1 = self.df.ix[0]['open']
+
         uptrend_p1 = True
-        pnf_data = [[0, 0, 0, 0, self.roundit(open_p1, base=self.box_size), True]]
+        if source == 'close':
+            open_ = self.df.ix[0]['open']
+            close = self.roundit(open_, base=self.box_size)
+            pnf_data = [[0, 0, 0, 0, close, True]]
+        else:
+            low = self.df.ix[0]['low']
+            open_ = self.roundit(low, base=self.box_size)
+            pnf_data = [[0, 0, open_, open_, open_, True]]
 
         for row in data:
             date = row.date
             close = row.close
-            close_p1 = pnf_data[-1][-2]
 
-            bricks = int((close - close_p1) / box_size)
+            open_p1 = pnf_data[-1][1]
+            high_p1 = pnf_data[-1][2]
+            low_p1 = pnf_data[-1][3]
+            close_p1 = pnf_data[-1][4]
+
+            if source == 'close':
+                bricks = int((close - close_p1) / box_size)
+            elif source == 'hl':
+                if uptrend_p1:
+                    bricks = int((row.high - high_p1) / box_size)
+                else:
+                    bricks = int((row.low - low_p1) / box_size)
+            print(date, bricks)
             state = self.get_state(uptrend_p1, bricks)
 
             if state is None:
@@ -242,13 +260,12 @@ class PnF(Instrument):
                     close_p1 += box_size
 
             pnf_data.extend(day_data)
-
         self.cdf = pd.DataFrame(pnf_data[1:])
         self.cdf.columns = ['date', 'open', 'high', 'low', 'close', 'uptrend']
         return self.cdf
 
-    def get_bar_ohlc_data(self):
-        df = self.get_ohlc_data()
+    def get_bar_ohlc_data(self, source='close'):
+        df = self.get_ohlc_data(source=source)
 
         df['trend_change'] = df['uptrend'].ne(df['uptrend'].shift().bfill()).astype(int)
         df['trend_change_-1'] = df['trend_change'].shift(-1)
