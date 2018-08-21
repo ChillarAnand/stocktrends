@@ -66,6 +66,18 @@ Renko chart calcuation
     data = renko.get_ohlc_data()
     print(data.tail())
 
+    # renko box calcuation based on periodic close
+    renko.chart_type = Renko.PERIOD_CLOSE
+    data = renko.get_ohlc_data()
+    print(data.tail())
+
+    # renko box calcuation based on price movement
+    renko.chart_type = Renko.PRICE_MOVEMENT
+    data = renko.get_ohlc_data()
+    print(data.tail())
+
+
+
 
 LineBreak chart calcuation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
