@@ -40,6 +40,9 @@ class Renko(Instrument):
 
         return self.cdf
 
+    def price_movement_bricks(self):
+        pass
+
     def period_close_bricks(self):
         brick_size = self.brick_size
         columns = ['date', 'open', 'high', 'low', 'close']
@@ -224,7 +227,6 @@ class PnF(Instrument):
                     bricks = int((row.high - high_p1) / box_size)
                 else:
                     bricks = int((row.low - low_p1) / box_size)
-            print(date, bricks)
             state = self.get_state(uptrend_p1, bricks)
 
             if state is None:
