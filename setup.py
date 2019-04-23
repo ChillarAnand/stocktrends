@@ -3,13 +3,13 @@ import setuptools
 
 setuptools.setup(
     name="stocktrends",
-    version="0.1.3",
+    version="0.1.4",
     url="https://github.com/chillaranand/stocktrends",
 
     author="chillar anand",
     author_email="chillar@avilpage.com",
 
-    description="",
+    description="Python package to plot stock trends with charts like renko, line break, pnf etc",
     long_description=open('README.rst').read(),
 
     packages=setuptools.find_packages(),
