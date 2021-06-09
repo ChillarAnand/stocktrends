@@ -37,7 +37,7 @@ Usage
 .. code-block:: python
 
     """
-    Sample data from tests/HDFCLIFE file.
+    Sample data from tests/HDFCLIFE.csv file.
 
     Date,Symbol,Series,Prev Close,Open,High,Low,Last,Close,VWAP,Volume,Turnover,Trades,Deliverable Volume,%Deliverble
     2017-11-17,HDFCLIFE,EQ,290.0,310.0,369.0,307.0,343.9,344.6,327.26,168836552,5525288229115000.0,1177530,82044782,0.48590000000000005
@@ -51,7 +51,7 @@ Usage
     from stocktrends import indicators
 
 
-    df = pd.read_csv('tests/HDFCLIFE')
+    df = pd.read_csv('tests/HDFCLIFE.csv')
     df.columns = [i.lower() for i in df.columns]
     rows = 5
 
@@ -60,17 +60,17 @@ Usage
     pnf.reversal_size = 3
 
 
-    print('\n\nPnF bar data - based on close column')
+    print('\n\nPnF BAR data - based on "close" column')
     data = pnf.get_bar_ohlc_data(source='close')
     print(data.head(rows))
 
 
-    print('\n\nPnF box data - based on close column')
+    print('\n\nPnF BOX data - based on "close" column')
     pnf_data = pnf.get_ohlc_data(source='close')
     print(pnf_data.head(rows))
 
 
-    print('\n\nPnF box data - based on high/low columns')
+    print('\n\nPnF BOX data - based on "high"/"low" columns')
     data = pnf.get_bar_ohlc_data(source='hl')
     print(data.head(rows))
 
