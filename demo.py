@@ -13,9 +13,9 @@ import pandas as pd
 from stocktrends import indicators
 
 
-df = pd.read_csv('tests/HDFCLIFE')
+df = pd.read_csv('tests/HDFCLIFE.csv')
 df.columns = [i.lower() for i in df.columns]
-rows = 5
+rows = 10
 
 pnf = indicators.PnF(df)
 pnf.box_size = 10
@@ -41,7 +41,7 @@ renko = indicators.Renko(df)
 
 
 print('\n\nRenko box calcuation based on periodic close')
-renko.brick_size = 2
+renko.brick_size = 20
 renko.chart_type = indicators.Renko.PERIOD_CLOSE
 data = renko.get_ohlc_data()
 print(data.tail(rows))
