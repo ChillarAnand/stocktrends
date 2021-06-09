@@ -55,7 +55,7 @@ class Renko(Instrument):
 
         self.cdf.loc[0] = self.df.loc[0]
         close = self.df.loc[0]['close'] // brick_size * brick_size
-        self.cdf.loc[0, 1:] = [close - brick_size, close, close - brick_size, close]
+        self.cdf.iloc[0, 1:] = [close - brick_size, close, close - brick_size, close]
         self.cdf['uptrend'] = True
 
         columns = ['date', 'open', 'high', 'low', 'close', 'uptrend']
@@ -203,11 +203,11 @@ class PnF(Instrument):
 
         uptrend_p1 = True
         if source == 'close':
-            open_ = self.df.ix[0]['open']
+            open_ = self.df.iloc[0]['open']
             close = self.roundit(open_, base=self.box_size)
             pnf_data = [[0, 0, 0, 0, close, True]]
         else:
-            low = self.df.ix[0]['low']
+            low = self.df.iloc[0]['low']
             open_ = self.roundit(low, base=self.box_size)
             pnf_data = [[0, 0, open_, open_, open_, True]]
 
