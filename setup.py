@@ -1,6 +1,5 @@
 import setuptools
 
-
 setuptools.setup(
     name="stocktrends",
     version="0.1.5",
@@ -17,7 +16,7 @@ setuptools.setup(
     install_requires=[],
 
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable'
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
