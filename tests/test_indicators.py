@@ -2,6 +2,8 @@ import pandas as pd
 
 from stocktrends import Renko, LineBreak
 
+import pytest
+
 
 df = pd.read_csv('tests/HOOLI')
 
@@ -13,11 +15,11 @@ def test_renko():
     renko = Renko(df)
     renko.brick_size = 4
     cdf = renko.get_ohlc_data()
-    assert cdf['close'].equals(rdf['close'])
+    assert rdf['close'].compare(cdf['close']).empty
 
 
 def test_linebreak():
     lb = LineBreak(df)
     lb.line_number = 3
     cdf = lb.get_ohlc_data()
-    assert cdf['close'].equals(lbdf['close'])
+    assert cdf['close'].compare(lbdf['close']).empty
