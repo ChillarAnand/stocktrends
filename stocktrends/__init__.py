@@ -1,6 +1,6 @@
 """stocktrends"""
 
-__version__ = '0.1.0'
-__author__ = 'chillar anand'
+__version__ = '0.1.6'
+__author__ = 'Chillar Anand'
 
-from .indicators import Renko, LineBreak
+from .indicators import Renko, LineBreak, PnF

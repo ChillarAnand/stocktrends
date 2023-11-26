@@ -1,7 +1,7 @@
 stocktrends
 ===========
 
-A python package to calcuate trends in stock markets.
+A python package to calculate trends in stock markets.
 
 .. image:: https://img.shields.io/pypi/v/stocktrends.svg
     :target: https://pypi.python.org/pypi/stocktrends

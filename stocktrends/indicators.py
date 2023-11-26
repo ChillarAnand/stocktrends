@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-# import ray.dataframe as pd
 
 
 class Instrument:
@@ -41,7 +40,10 @@ class Renko(Instrument):
         return self.cdf
 
     def price_movement_bricks(self):
-        pass
+        """
+        Implement it in child class
+        """
+        raise NotImplemented('Implement it in child class')
 
     def period_close_bricks(self):
         brick_size = self.brick_size
@@ -81,12 +83,12 @@ class Renko(Instrument):
                 uptrend = not uptrend
                 bricks += 1
                 close_p1 -= brick_size
-                for i in range(abs(bricks)):
+                for _ in range(abs(bricks)):
                     r = [date, close_p1, close_p1, close_p1 - brick_size, close_p1 - brick_size, uptrend]
                     data.append(r)
                     close_p1 -= brick_size
             elif not uptrend and bricks <= -1:
-                for i in range(abs(bricks)):
+                for _ in range(abs(bricks)):
                     r = [date, close_p1, close_p1, close_p1 - brick_size, close_p1 - brick_size, uptrend]
                     data.append(r)
                     close_p1 -= brick_size
