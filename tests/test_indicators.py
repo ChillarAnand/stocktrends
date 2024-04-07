@@ -5,13 +5,13 @@ from stocktrends import Renko, LineBreak
 import pytest
 
 
-df = pd.read_csv('tests/HOOLI')
 
 rdf = pd.read_csv('tests/hooli_renko_4.csv')
-lbdf = pd.read_csv('tests/hooli_linebreak_3.csv')
+# lbdf = pd.read_csv('tests/hooli_linebreak_3.csv')
 
 
 def test_renko():
+    df = pd.read_csv('HOOLI')
     renko = Renko(df)
     renko.brick_size = 4
     cdf = renko.get_ohlc_data()
